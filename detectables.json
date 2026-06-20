@@ -33,7 +33,7 @@
     "url": "https://osu.ppy.sh/favicon.ico",
     "executables": [
       { "name": "osu!.exe", "os": "win32" },
-      { "name": "osu!", "os": "darwin" },
+      { "name": "osu!.app", "os": "darwin" },
       { "name": "osu!", "os": "linux" }
     ]
   }

@@ -26,5 +26,15 @@
         "arguments": "net.minecraft.client.main.Main"
       }
     ]
+  },
+  {
+    "name": "osu!",
+    "aliases": ["osu!(lazer)", "osu!(stable)"],
+    "url": "https://osu.ppy.sh/favicon.ico",
+    "executables": [
+      { "name": "osu!.exe", "os": "win32" },
+      { "name": "osu!", "os": "darwin" },
+      { "name": "osu!", "os": "linux" }
+    ]
   }
 ]

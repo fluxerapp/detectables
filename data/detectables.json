@@ -6,7 +6,7 @@
       "Minecraft Windows 10 Edition",
       "Minecraft: Java Edition"
     ],
-    "url": "https://www.minecraft.net/favicon.ico",
+    "icon": "minecraft.png",
     "executables": [
       { "name": "minecraft.windows.exe", "os": "win32" },
       { "name": "content/minecraft.exe", "os": "win32" },
@@ -30,11 +30,19 @@
   {
     "name": "osu!",
     "aliases": ["osu!(lazer)", "osu!(stable)"],
-    "url": "https://osu.ppy.sh/favicon.ico",
+    "icon": "osu.png",
     "executables": [
       { "name": "osu!.exe", "os": "win32" },
       { "name": "osu!.app", "os": "darwin" },
       { "name": "osu!", "os": "linux" }
-    ]
+    ],
+    "presence_assets": {
+      "mode_custom": "osu/mode_custom.png",
+      "mode_2": "osu/mode_2.png",
+      "mode_0": "osu/mode_0.png",
+      "mode_3": "osu/mode_3.png",
+      "mode_1": "osu/mode_1.png",
+      "osu_logo_lazer": "osu/osu_logo_lazer.png"
+    }
   }
 ]

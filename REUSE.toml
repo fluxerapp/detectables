@@ -1,0 +1,29 @@
+version = 1
+SPDX-PackageName = "detectables"
+SPDX-PackageSupplier = "Fluxer"
+SPDX-PackageDownloadLocation = "https://github.com/fluxerapp/detectables"
+
+[[annotations]]
+path = [
+  "LICENSE",
+  "NOTICE",
+  "README.md",
+  "TRADEMARKS.md",
+  "CONTRIBUTING.md",
+  "TAKEDOWN.md",
+  "REUSE.toml",
+  ".github/**",
+  "schema/**"
+]
+SPDX-FileCopyrightText = "2026 Fluxer"
+SPDX-License-Identifier = "Apache-2.0"
+
+[[annotations]]
+path = "data/**"
+SPDX-FileCopyrightText = "2026 Fluxer"
+SPDX-License-Identifier = "CC0-1.0"
+
+[[annotations]]
+path = "assets/**"
+SPDX-FileCopyrightText = "Image assets are property of their respective owners. See NOTICE and TRADEMARKS.md."
+SPDX-License-Identifier = "LicenseRef-Proprietary"

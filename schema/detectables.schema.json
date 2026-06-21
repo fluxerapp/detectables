@@ -1,0 +1,82 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://github.com/fluxerapp/detectables/blob/main/schema/detectables.schema.json",
+  "title": "Detectables",
+  "description": "Applications recognized from running processes and resolved to local assets.",
+  "type": "array",
+  "items": { "$ref": "#/$defs/application" },
+
+  "$defs": {
+    "application": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "icon", "executables"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Display name."
+        },
+        "aliases": {
+          "type": "array",
+          "uniqueItems": true,
+          "items": { "type": "string", "minLength": 1 },
+          "description": "Alternate names or search terms."
+        },
+        "icon": {
+          "$ref": "#/$defs/assetPath",
+          "description": "Icon path under `assets/`."
+        },
+        "executables": {
+          "type": "array",
+          "minItems": 1,
+          "items": { "$ref": "#/$defs/executable" },
+          "description": "Process match rules. Any rule may match."
+        },
+        "presence_assets": {
+          "type": "object",
+          "minProperties": 1,
+          "propertyNames": { "$ref": "#/$defs/presenceAssetKey" },
+          "additionalProperties": { "$ref": "#/$defs/assetPath" },
+          "description": "Maps reported activity image keys to paths under `assets/`."
+        }
+      }
+    },
+
+    "executable": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "os"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Lowercase executable name or forward-slash path suffix. Prefix with `>` when matching a shared runtime with `arguments`."
+        },
+        "os": {
+          "type": "string",
+          "enum": ["win32", "linux", "darwin"],
+          "description": "Target platform."
+        },
+        "arguments": {
+          "type": "string",
+          "minLength": 1,
+          "description": "Command-line substring required for this rule."
+        }
+      }
+    },
+
+    "assetPath": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "^[a-z0-9_-]+(?:/[a-z0-9_-]+)*\\.png$",
+      "description": "Lowercase path under `assets/`, without query string or leading slash."
+    },
+
+    "presenceAssetKey": {
+      "type": "string",
+      "pattern": "^[a-z0-9_-]+$",
+      "description": "Lowercase image key reported by the application."
+    }
+  }
+}

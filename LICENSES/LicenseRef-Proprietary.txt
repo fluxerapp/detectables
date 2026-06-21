@@ -1,0 +1,11 @@
+The image assets in this repository are property of their respective owners.
+
+They are not licensed by this project under Apache-2.0, CC0-1.0, or any other
+open license. They are included solely to identify the corresponding software
+for application detection and activity presentation.
+
+Product names, company names, logos, and marks referenced by this repository
+remain property of their respective owners. Their inclusion does not imply
+affiliation, sponsorship, or endorsement.
+
+To report a rights concern, email copyright@fluxer.app.

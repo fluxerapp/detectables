@@ -1,0 +1,110 @@
+---
+name: Compliance
+
+"on":
+  pull_request:
+  push:
+    branches:
+      - main
+
+permissions:
+  contents: read
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        # actions/checkout v7.0.0
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0
+
+      - name: Set up Python
+        # actions/setup-python v6.2.0
+        uses: actions/setup-python@a309ff8b426b58ec0e2a45f0f869d46889d02405
+        with:
+          python-version: "3.x"
+
+      - name: Install validation tools
+        run: |
+          python -m pip install --quiet jsonschema reuse
+
+      - name: Validate JSON schema
+        run: |
+          python <<'PY'
+          import json
+          from pathlib import Path
+
+          from jsonschema import Draft202012Validator
+
+          schema_path = Path("schema/detectables.schema.json")
+          data_path = Path("data/detectables.json")
+          schema = json.loads(schema_path.read_text())
+          data = json.loads(data_path.read_text())
+
+          Draft202012Validator.check_schema(schema)
+          validator = Draft202012Validator(schema)
+          errors = sorted(
+              validator.iter_errors(data),
+              key=lambda error: error.path,
+          )
+
+          if errors:
+              for error in errors:
+                  path = ".".join(str(part) for part in error.path) or "$"
+                  print(f"{path}: {error.message}")
+              raise SystemExit(1)
+          PY
+
+      - name: Check hostless asset references
+        run: |
+          python <<'PY'
+          import json
+          import re
+          from pathlib import Path
+
+          data = json.loads(Path("data/detectables.json").read_text())
+          url = re.compile(r"^[a-z][a-z0-9+.-]*://", re.IGNORECASE)
+          bad = []
+
+          for app in data:
+              refs = [
+                  app["icon"],
+                  *app.get("presence_assets", {}).values(),
+              ]
+              for ref in refs:
+                  if url.match(ref) or ref.startswith("/"):
+                      bad.append(f"{app['name']}: {ref}")
+
+          if bad:
+              print("Asset references must be relative:")
+              print("\n".join(bad))
+              raise SystemExit(1)
+          PY
+
+      - name: Check local asset files
+        run: |
+          python <<'PY'
+          import json
+          from pathlib import Path
+
+          data = json.loads(Path("data/detectables.json").read_text())
+          missing = []
+
+          for app in data:
+              refs = [
+                  app["icon"],
+                  *app.get("presence_assets", {}).values(),
+              ]
+              for ref in refs:
+                  path = Path("assets") / ref
+                  if not path.is_file():
+                      missing.append(f"{app['name']}: {path}")
+
+          if missing:
+              print("Referenced asset files are missing:")
+              print("\n".join(missing))
+              raise SystemExit(1)
+          PY
+
+      - name: REUSE lint
+        run: reuse lint
